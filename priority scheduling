@@ -1,9 +1,11 @@
+/*
 #include<stdio.h>
 #include<stdlib.h>
 int main()
 {
-int i,arrival_time=0,burst_time=0,number=0,priority=0;
+int i,arrival_time[10];burst_time[10],number=0,priority=0;
 float turnAround_time=0,waiting_time=0,averageWaiting_time=0;
+int r_time[10];
 char ch;
 printf("\n Enter Total Number of process for scheduling : ");
 scanf(" %d ",&number);
@@ -17,5 +19,67 @@ printf("\n Enter the burst time  :");
 scanf("%d",&burst_time[i]);
 printf("\n Enter the priority of the process ");
 scanf("%d ", &priority[i]);
+r_time[i]=
 
+}
+*/
+
+
+int main() 
+{ 
+ 
+  int i,j,n,time,remain,flag=0,time_quantum; 
+  int waiting_time=0,turnAround_time=0,arrival_time[10],burst_time[10],r_time[10]; 
+  printf("Enter Total Process:\t "); 
+  char ch;
+  scanf("%d",&n); 
+  remain=n; 
+  for(i=0;i<n;i++) 
+  { 
+    ch='A';
+    ch++;
+    printf("Enter Arrival Time and Burst Time for Process Process number %d :",i+1); 
+    scanf("%d",&arrival_time[i]); 
+    scanf("%d",&burst_time[i]); 
+    r_time[i]=burst_time[i]; 
+  } 
+  printf("Enter Time Quantum:\t"); 
+  scanf("%d",&time_quantum); 
+  printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n"); 
+  for(time=0,i=0;remain!=0;) 
+  { 
+    if(r_time[i]<=time_quantum && r_time[i]>0) 
+    { 
+      time+=r_time[i]; 
+      r_time[i]=0; 
+      flag=1; 
+    } 
+    else if(r_time[i]>0) 
+    { 
+      r_time[i]-=time_quantum; 
+      time+=time_quantum; 
+    } 
+    if(r_time[i]==0 && flag==1) 
+    { 
+      remain--; 
+      printf("P[%d]\t|\t%d\t|\t%d\n",if (/* condition */) {
+        /* code */
+      } else {
+        /* code */
+      }+1,time-arrival_time[i],time-arrival_time[i]-burst_time[i]); 
+      waiting_time+=time-arrival_time[i]-burst_time[i]; 
+      turnAround_time+=time-arrival_time[i]; 
+      flag=0; 
+    } 
+    if(i==n-1) 
+      i=0; 
+    else if(arrival_time[i+1]<=time) 
+      i++; 
+    else 
+      i=0; 
+  } 
+  printf("\nAverage Waiting Time= %f\n",waiting_time*1.0/n); 
+  printf("Avg Turnaround Time = %f",turnAround_time*1.0/n); 
+  
+  return 0; 
 }
