@@ -1,28 +1,4 @@
-/*
-#include<stdio.h>
-#include<stdlib.h>
-int main()
-{
-int i,arrival_time[10];burst_time[10],number=0,priority=0;
-float turnAround_time=0,waiting_time=0,averageWaiting_time=0;
-int r_time[10];
-char ch;
-printf("\n Enter Total Number of process for scheduling : ");
-scanf(" %d ",&number);
-for(i=0;i<number;i++)
-{
-ch='A';
-ch++;
-printf("\n Enter the Arrival time ");
-scanf("%d" ,&arrival_time[i]);
-printf("\n Enter the burst time  :");
-scanf("%d",&burst_time[i]);
-printf("\n Enter the priority of the process ");
-scanf("%d ", &priority[i]);
-r_time[i]=
 
-}
-*/
 
 
 int main() 
