@@ -1,30 +1,33 @@
-
-
-
+#include<stdio.h> 
+ 
 int main() 
 { 
- 
-  int i,j,n,time,remain,flag=0,time_quantum; 
-  int waiting_time=0,turnAround_time=0,arrival_time[10],burst_time[10],r_time[10]; 
-  printf("Enter Total Process:\t "); 
+ int arrival_time[10],burst_time[10],r_time[10];
+  int i,time,t,flag=0,quantum; 
   char ch;
+  int n;
+  int waiting_time=0,turnaround_time=0,j=0;
+   
+  printf("Enter Total number of Process:\t "); 
   scanf("%d",&n); 
-  remain=n; 
+  t=n; 
   for(i=0;i<n;i++) 
   { 
-    ch='A';
-    ch++;
-    printf("Enter Arrival Time and Burst Time for Process Process number %d :",i+1); 
+  ch='A';
+  ch++;
+    printf("Enter the Arrival Time for Process Number %d :",i+1); 
     scanf("%d",&arrival_time[i]); 
+    
+    printf("Enter the burst Time for Process Number %d :",i+1); 
     scanf("%d",&burst_time[i]); 
     r_time[i]=burst_time[i]; 
   } 
-  printf("Enter Time Quantum:\t"); 
-  scanf("%d",&time_quantum); 
+  printf("Enter Time slice quantum:\t"); 
+  scanf("%d",&quantum); 
   printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n"); 
-  for(time=0,i=0;remain!=0;) 
+  for(time=0,i=0;t!=0;) 
   { 
-    if(r_time[i]<=time_quantum && r_time[i]>0) 
+    if(r_time[i]<=quantum && r_time[i]>0) 
     { 
       time+=r_time[i]; 
       r_time[i]=0; 
@@ -32,19 +35,15 @@ int main()
     } 
     else if(r_time[i]>0) 
     { 
-      r_time[i]-=time_quantum; 
-      time+=time_quantum; 
+      r_time[i]-=quantum; 
+      time+=quantum; 
     } 
     if(r_time[i]==0 && flag==1) 
     { 
-      remain--; 
-      printf("P[%d]\t|\t%d\t|\t%d\n",if (/* condition */) {
-        /* code */
-      } else {
-        /* code */
-      }+1,time-arrival_time[i],time-arrival_time[i]-burst_time[i]); 
+      t--; 
+      printf("P[%d]\t|\t%d\t|\t%d\n",i+1,time-arrival_time[i],time-arrival_time[i]-burst_time[i]); 
       waiting_time+=time-arrival_time[i]-burst_time[i]; 
-      turnAround_time+=time-arrival_time[i]; 
+      turnaround_time+=time-arrival_time[i]; 
       flag=0; 
     } 
     if(i==n-1) 
@@ -55,6 +54,7 @@ int main()
       i=0; 
   } 
   printf("\nAverage Waiting Time= %f\n",waiting_time*1.0/n); 
-  printf("Avg Turnaround Time = %f",turnAround_time*1.0/n); 
+  printf("Avg Turnaround Time = %f",turnaround_time*1.0/n); 
+  
   return 0; 
 }
