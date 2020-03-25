@@ -1,60 +1,158 @@
-#include<stdio.h> 
- 
-int main() 
-{ 
- int arrival_time[10],burst_time[10],r_time[10];
-  int i,time,t,flag=0,quantum; 
-  char ch;
-  int n;
-  int waiting_time=0,turnaround_time=0,j=0;
-   
-  printf("Enter Total number of Process:\t "); 
-  scanf("%d",&n); 
-  t=n; 
-  for(i=0;i<n;i++) 
-  { 
-  ch='A';
-  ch++;
-    printf("Enter the Arrival Time for Process Number %d :",i+1); 
-    scanf("%d",&arrival_time[i]); 
-    
-    printf("Enter the burst Time for Process Number %d :",i+1); 
-    scanf("%d",&burst_time[i]); 
-    r_time[i]=burst_time[i]; 
-  } 
-  printf("Enter Time slice quantum:\t"); 
-  scanf("%d",&quantum); 
-  printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n"); 
-  for(time=0,i=0;t!=0;) 
-  { 
-    if(r_time[i]<=quantum && r_time[i]>0) 
-    { 
-      time+=r_time[i]; 
-      r_time[i]=0; 
-      flag=1; 
-    } 
-    else if(r_time[i]>0) 
-    { 
-      r_time[i]-=quantum; 
-      time+=quantum; 
-    } 
-    if(r_time[i]==0 && flag==1) 
-    { 
-      t--; 
-      printf("P[%d]\t|\t%d\t|\t%d\n",i+1,time-arrival_time[i],time-arrival_time[i]-burst_time[i]); 
-      waiting_time+=time-arrival_time[i]-burst_time[i]; 
-      turnaround_time+=time-arrival_time[i]; 
-      flag=0; 
-    } 
-    if(i==n-1) 
-      i=0; 
-    else if(arrival_time[i+1]<=time) 
-      i++; 
-    else 
-      i=0; 
-  } 
-  printf("\nAverage Waiting Time= %f\n",waiting_time*1.0/n); 
-  printf("Avg Turnaround Time = %f",turnaround_time*1.0/n); 
-  
-  return 0; 
+#include<stdio.h>
+#include<stdbool.h>
+#include<string.h>
+#include<stdlib.h>
+struct process
+{
+	int Number,Time_slice,count;
+	int Burst[1000],priority[1000],Arrival[1000];
+  int i;
+ 	int com[1000],Turn_time[1000];
+	char yes;
+	int Waiting_time[1000],r_time[1000];
+}Process;
+void getData()
+{
+B:	printf("Enter the number of processes : ");
+	scanf("%d",&Process.Number);
+	if(Process.Number<=0){
+		printf("Enter number of processes greater than 0\n");
+		goto B;
+	}
+
+	for(Process.i=1;Process.i<=Process.Number;Process.i++){
+C:	printf("Enter the Burst Time for process %d : ",Process.i);
+	scanf("%d",&Process.Burst[Process.i]);
+	if(Process.Burst[Process.i]<=0){
+		printf("Invalid Input\n");
+		goto C;
+	}
 }
+
+	for(Process.i=1;Process.i<=Process.Number;Process.i++){
+D:	printf("Enter the Arrival Time for process %d : ",Process.i);
+	scanf("%d",&Process.Arrival[Process.i]);
+	if(Process.Arrival[Process.i]<0){
+		printf("Invalid Input \n");
+		goto D;
+	}
+}
+
+	for(Process.i=1;Process.i<=Process.Number;Process.i++){
+E:	printf("Enter the Priority for process %d : ",Process.i);
+	scanf("%d",&Process.priority[Process.i]);
+	if(Process.priority[Process.i]<0){
+		printf("Invalid Input \n");
+		goto E ;
+		}
+	}
+}
+void display()
+	{
+	printf("Process Number\t\t\tArrival Time\t\t\tBurst Time\t\t\tPriority\n");
+	for(Process.i=1;Process.i<=Process.Number;Process.i++){
+	printf("    %d\t\t\t\t    %d\t\t\t\t     %d\t\t\t\t    %d\n",Process.i,Process.Arrival[Process.i],Process.Burst[Process.i],Process.priority[Process.i]);
+	}
+}
+void priority(){
+	Process.count=0;
+A:	printf("Enter the process number you want to execute : ");
+	scanf("%d",&Process.i);
+	if(Process.i<=0||Process.i>Process.Number){
+		printf("Invalid Input Try Again\n");
+
+		goto A;
+	}
+	Process.priority[Process.i]==0;
+	if(Process.priority[Process.i]==0){
+	Process.priority[Process.i]+=1;
+	printf("%d is in Ready queue \n",Process.i);
+	printf("\nProcess Number\t\t\tBurst Time\t\t\tArrival Time\t\t\tPriority\n");
+	printf("    %d\t\t\t\t    %d\t\t\t\t     %d\t\t\t\t    %d\n",Process.i,Process.Burst[Process.i],Process.Arrival[Process.i],Process.priority[Process.i]);
+	Process.count++;
+	fflush(stdin);
+	printf("Do you want to execute more process? Y/N : ");
+	scanf("%c",&Process.yes);
+
+	if(Process.yes=='Y'||Process.yes=='y'){
+		printf("%d is preempted from the ready queue\n",Process.i);
+		Process.priority[Process.i]=2;
+		goto A;
+	}
+
+	printf("\n\n\nProcesses in the Waiting queue are \n\n");
+	for(Process.i=1;Process.i<=Process.Number;Process.i++){
+	Process.count=1;
+	if(Process.priority[Process.i]!=Process.count){
+	Process.priority[Process.i]+=2;
+	printf("\nProcess Number\t\t\tBurst Time\t\t\tArrival Time\t\t\tPriority\n");
+	printf("    %d\t\t\t\t    %d\t\t\t\t     %d\t\t\t\t    %d\n",Process.i,Process.Burst[Process.i],Process.Arrival[Process.i],Process.priority[Process.i]);
+				}
+			}
+		}
+	}
+
+void timeTime_slice()
+{
+	Process.Time_slice=1;
+	int t=0;
+	for(Process.i=1;Process.i<=Process.Number;Process.i++)
+	{
+		Process.r_time[Process.i]=Process.Burst[Process.i];
+	}
+	while(1)
+	{
+		bool done=true;
+		for(Process.i=1;Process.i<=Process.Number;Process.i++)
+		if(Process.r_time[Process.i]>0){
+			done = false;
+			if(Process.r_time[Process.i]>Process.Time_slice){
+				t+=Process.Time_slice;
+				Process.r_time[Process.i]-=Process.Time_slice;
+			}
+			else{
+				t=t+Process.r_time[Process.i];
+				Process.Waiting_time[Process.i]=t-Process.Burst[Process.i];
+				Process.r_time[Process.i]=0;
+			}
+		}
+	if(done==true)
+	break;
+	}
+}
+void waiting(){
+	printf("\n\n\n****************WAITING TIME OF THE PROCESSES***************\n");
+	for(Process.i=1;Process.i<=Process.Number;Process.i++){
+		printf("\nProcess Number\t\tArrival Time\t\tBurst Time\t\tPriority\t\tWaiting Time\n");
+	    printf("    %d\t\t\t    %d\t\t\t     %d\t\t\t    %d\t\t\t     %d\n",Process.i,Process.Arrival[Process.i],Process.Burst[Process.i],Process.priority[Process.i],Process.Waiting_time[Process.i]);
+	}
+}
+void turnaround()
+{
+	printf("\n\n\n***************TURNAROUND TIME OF THE PROCESSES***************\n");
+	for(Process.i=1;Process.i<=Process.Number;Process.i++){
+	Process.Turn_time[Process.i]=Process.Waiting_time[Process.i]+Process.Burst[Process.i];
+	printf("\nProcess Number\t\tBurst Time\t\tArrival Time\t\tPriority\t\tTurnaround Time\n");
+	printf("    %d\t\t\t    %d\t\t\t     %d\t\t\t    %d\t\t\t     %d\n",Process.i,Process.Burst[Process.i],Process.Arrival[Process.i],Process.priority[Process.i],Process.Turn_time[Process.i]);
+	}
+}
+
+int main()
+{
+	float Avg_tt=0,Avg_wt=0;
+	getData();
+	display();
+	priority();
+	timeTime_slice();
+	waiting();
+	turnaround();
+	for(Process.i=1;Process.i<=Process.Number;Process.i++){
+	Avg_tt=Avg_tt+Process.Turn_time[Process.i];
+	Avg_wt=Avg_wt+Process.Waiting_time[Process.i];
+	}
+	Avg_tt=Avg_tt/Process.Number;
+	Avg_wt=Avg_wt/Process.Number;
+	printf("\nAverage waiting time : %f",Avg_wt);
+	printf("\nAverage turnaround time : %f",Avg_tt);
+}
+
